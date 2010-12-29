@@ -1,0 +1,69 @@
+<project name="Natural Entry Point" default="build" basedir=".">
+
+  <property file="build.properties"/>
+  <taskdef resource="flexTasks.tasks" classpath="${FLEX_HOME}/ant/lib/flexTasks.jar" /> 
+ 
+  <property name="src_dir" value="src"/>
+  <property name="main_class" value="fourpawns"/>
+  <property name="swf" value="${main_class}.swf"/>
+  <property name="deploy_dir" value="deploy"/>
+
+  <target name="build" description="compiles">
+	<mxmlc file="${src_dir}/${main_class}.as"
+		   output="${deploy_dir}/${swf}"
+		   keep-generated-actionscript="true"
+		   incremental="true">
+      <load-config filename="${FLEX_HOME}/frameworks/flex-config.xml"/>
+      <source-path path-element="${FLEX_HOME}/frameworks" />
+	  
+      <!-- List of SWC files or directories that contain SWC files. -->
+      <compiler.library-path dir="." append="true">
+		<include name="libs" />
+      </compiler.library-path>
+
+    </mxmlc>
+	<!--		<copy file="${src_dir}/levels.xml" tofile="${deploy_dir}/levels.xml"/>-->
+  </target>
+
+  <target name="bundle" description="bundle up code">
+	<tar destfile="${deploy_dir}/${main_class}.tar.gz"
+		 basedir="src"
+		 compression="gzip"
+		 excludes="**/.svn"
+		 />
+  </target>
+
+
+  <target name="build5" description="compiles">
+	<mxmlc file="${src_dir}/fivepawns.as"
+		   output="${deploy_dir}/fivepawns.swf"
+		   keep-generated-actionscript="true"
+		   incremental="true">
+      <load-config filename="${FLEX_HOME}/frameworks/flex-config.xml"/>
+      <source-path path-element="${FLEX_HOME}/frameworks" />
+      <!-- List of SWC files or directories that contain SWC files. -->
+      <compiler.library-path dir="." append="true">
+		<include name="libs" />
+      </compiler.library-path>
+    </mxmlc>
+  </target>
+
+  <target name="clean">
+    <delete dir="${APP_ROOT}/generated"/>
+    <delete>
+      <fileset dir="${deploy_dir}" includes="${swf}"/>
+    </delete>
+  </target>
+
+  <target name="run" description="runs application">
+	<exec executable="${flashplayer}" spawn="true">
+	  <arg value="${deploy_dir}/${swf}"/>
+	</exec>	
+  </target>
+  
+  <target name="browser" description="run in browser">
+	<exec executable="${browser}" dir="." spawn="true">
+	  <arg line='${basedir}/${deploy_dir}/${html}'/>
+	</exec>
+  </target>
+</project>
