@@ -12,6 +12,9 @@ package com.muffinlabs {
   import com.google.analytics.GATracker;
   import com.google.analytics.AnalyticsTracker;
 
+  import flash.net.URLRequest;
+  import flash.net.navigateToURL;
+
   /**
    * display/manage the main screen of the game -- the board/etc
    */
@@ -209,6 +212,9 @@ package com.muffinlabs {
 	  footerButton = new SpriteButton(
 									  new TextWidget("muffinlabs.com", 0xaaaaaa, "abstract", 14),
 									  new TextWidget("muffinlabs.com", 0xff0000, "abstract", 14));
+
+
+	  footerButton.addEventListener("click", onHyperLinkEvent);
 
 	  if ( Board.width == 4 ) {
 		footerButton.x = boardX + 200;
@@ -642,6 +648,10 @@ package com.muffinlabs {
 		moveEnd = new Point(x, y);
 	  }
 	} // pickActivePiece
+
+	private function onHyperLinkEvent(evt:Event):void {
+	  navigateToURL(new URLRequest("http://muffinlabs.com/"), "_new");
+	}
 	
 	
   } // PlayScreen
